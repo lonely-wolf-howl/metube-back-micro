@@ -33,3 +33,11 @@ lerna-debug.log*
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
+
+# environment
+.env
+
+# yml
+docker-compose.yml
+kafka-2.8.1.yml
+postgres.yml

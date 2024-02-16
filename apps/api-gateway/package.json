@@ -1,5 +1,5 @@
 {
-  "name": "micro",
+  "name": "back",
   "version": "0.0.1",
   "description": "",
   "author": "",
@@ -18,7 +18,7 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./apps/back/test/jest-e2e.json",
-    "docker:micro": "cp ./package.json ./apps/api-gateway && cp ./package.json ./apps/video && cp ./package.json ./apps/analytics && docker-compose -p micro down && docker-compose -p micro up --remove-orphans",
+    "docker:back": "cp ./package.json ./apps/api-gateway && cp ./package.json ./apps/video && cp ./package.json ./apps/analytics && docker-compose -p back down && docker-compose -p back up --remove-orphans",
     "docker:postgres": "docker-compose -f postgres.yml -p postgres down && docker-compose -f postgres.yml -p postgres up --remove-orphans"
   },
   "dependencies": {
