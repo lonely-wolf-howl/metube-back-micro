@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Inject, Injectable, NotFoundException } from '@nestjs/common';
 import {
   S3Client,
   GetObjectCommand,
@@ -8,13 +8,15 @@ import { Readable } from 'stream';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Video } from '../video/entity/video.entity';
+import { ClientProxy } from '@nestjs/microservices';
 
 @Injectable()
 export class S3Service {
   private readonly s3Client: S3Client;
 
   constructor(
-    @InjectRepository(Video) private videoRepository: Repository<Video>
+    @InjectRepository(Video) private videoRepository: Repository<Video>,
+    @Inject('S3_SERVICE') private client: ClientProxy
   ) {
     this.s3Client = new S3Client({
       region: 'ap-northeast-2',
@@ -67,6 +69,11 @@ export class S3Service {
       });
       if (!video) throw new NotFoundException();
       const { mimetype } = video;
+
+      this.client.emit('video_downloaded', {
+        id: video.id,
+        title: video.title,
+      });
 
       return { stream, mimetype, size };
     } catch (error) {

@@ -7,24 +7,18 @@ import {
 } from 'typeorm';
 
 @Entity()
-export class Video {
+export class Analytics {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
   @Column()
-  title: string;
-
-  @Column({ name: 'display_name' })
-  displayName: string;
-
-  @Column({ unique: true })
-  email: string;
+  videoId: string;
 
   @Column()
-  mimetype: string;
+  videoTitle: string;
 
-  @Column({ name: 'view_count', default: 0 })
-  viewCount: number;
+  @Column({ name: 'download_count', default: 0 })
+  downloadCount: number;
 
   @CreateDateColumn({ name: 'created_at' })
   createdAt: Date;

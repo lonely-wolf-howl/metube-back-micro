@@ -5,6 +5,7 @@ import { CreateVideoCommand } from './command/create-video.command';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { FindVideosQuery } from './query/find-videos.query';
 import { FindVideoResDto } from './dto/res.dto';
+import { FindVideoQuery } from './query/find-video.query';
 
 @Controller()
 export class VideoController {
@@ -13,6 +14,16 @@ export class VideoController {
     private commandBus: CommandBus,
     private queryBus: QueryBus
   ) {}
+
+  @MessagePattern({ cmd: 'pong' })
+  async sayPong(): Promise<string> {
+    return 'video-service pong';
+  }
+
+  @MessagePattern({ cmd: 'sentry' })
+  async sentry(): Promise<void> {
+    throw new Error('SENTRY - ERROR TEST');
+  }
 
   @MessagePattern({ cmd: 'upload' })
   async upload({
@@ -66,8 +77,18 @@ export class VideoController {
     return result;
   }
 
-  @MessagePattern({ cmd: 'sentry' })
-  async sentry(): Promise<void> {
-    throw new Error('SENTRY - ERROR TEST');
+  @MessagePattern({ cmd: 'find-one' })
+  async findOne({ id }: { id: string }): Promise<FindVideoResDto> {
+    const findVideoQuery = new FindVideoQuery(id);
+    const { source, title, displayName, viewCount } =
+      await this.queryBus.execute(findVideoQuery);
+    const result = {
+      id,
+      source,
+      title,
+      displayName,
+      viewCount,
+    };
+    return result;
   }
 }

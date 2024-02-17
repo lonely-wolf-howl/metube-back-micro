@@ -6,7 +6,6 @@ export interface VideoWithSource {
   email: string;
   mimetype: string;
   viewCount: number;
-  downloadCount: number;
   createdAt: Date;
   updatedAt: Date;
 }

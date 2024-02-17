@@ -7,10 +7,16 @@ import { CqrsModule } from '@nestjs/cqrs';
 import { S3Module } from '../s3/s3.module';
 import { CreateVideoHandler } from './handler/create-video.handler';
 import { FindVideosQueryHandler } from './handler/find-videos.handler';
+import { FindVideoQueryHandler } from './handler/find-video.handler';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Video]), CqrsModule, S3Module],
   controllers: [VideoController],
-  providers: [VideoService, CreateVideoHandler, FindVideosQueryHandler],
+  providers: [
+    VideoService,
+    CreateVideoHandler,
+    FindVideosQueryHandler,
+    FindVideoQueryHandler,
+  ],
 })
 export class VideoModule {}

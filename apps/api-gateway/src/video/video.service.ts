@@ -7,6 +7,26 @@ import { FindVideoResDto } from './dto/res.dto';
 export class VideoService {
   constructor(@Inject('VIDEO_SERVICE') private client: ClientProxy) {}
 
+  async sayPong(): Promise<string> {
+    const pattern = { cmd: 'pong' };
+    const payload = {};
+
+    const pong = await firstValueFrom(
+      this.client.send<string>(pattern, payload)
+    );
+    return pong;
+  }
+
+  async sentry(): Promise<void> {
+    const pattern = { cmd: 'sentry' };
+    const payload = {};
+
+    const error = await firstValueFrom(
+      this.client.send<void>(pattern, payload)
+    );
+    return error;
+  }
+
   async upload(
     title: string,
     displayName: string,
@@ -35,13 +55,13 @@ export class VideoService {
     return videos;
   }
 
-  async sentry(): Promise<void> {
-    const pattern = { cmd: 'sentry' };
-    const payload = {};
+  async findOne(id: string): Promise<FindVideoResDto> {
+    const pattern = { cmd: 'find-one' };
+    const payload = { id };
 
-    const error = await firstValueFrom(
-      this.client.send<void>(pattern, payload)
+    const video = await firstValueFrom<FindVideoResDto>(
+      this.client.send<FindVideoResDto>(pattern, payload)
     );
-    return error;
+    return video;
   }
 }

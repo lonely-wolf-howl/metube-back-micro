@@ -4,6 +4,7 @@ import {
   Get,
   Headers,
   HttpStatus,
+  Param,
   ParseFilePipeBuilder,
   Post,
   Query,
@@ -16,8 +17,9 @@ import { FileInterceptor } from '@nestjs/platform-express';
 import { HeaderGuard } from '../auth/guards/header.guard';
 import { ApiConsumes, ApiExtraModels, ApiTags } from '@nestjs/swagger';
 import {
-  ApiGetItemsResponse,
   ApiPostResponse,
+  ApiGetItemsResponse,
+  ApiGetResponse,
 } from '../common/decorators/swagger.decorator';
 import { CreateVideoReqDto, FindVideoReqDto } from './dto/req.dto';
 import { CreateVideoResDto, FindVideoResDto } from './dto/res.dto';
@@ -37,6 +39,18 @@ import { SkipThrottle, Throttle } from '@nestjs/throttler';
 @Controller('videos')
 export class VideoController {
   constructor(private readonly videoService: VideoService) {}
+
+  @SkipThrottle()
+  @Get('test/ping')
+  async sayPong(): Promise<string> {
+    return await this.videoService.sayPong();
+  }
+
+  @SkipThrottle()
+  @Get('test/sentry')
+  async sentry(): Promise<void> {
+    return await this.videoService.sentry();
+  }
 
   @ApiConsumes('multipart/form-data')
   @ApiPostResponse(CreateVideoResDto)
@@ -88,9 +102,10 @@ export class VideoController {
     return await this.videoService.findAll(page, size);
   }
 
+  @ApiGetResponse(FindVideoResDto)
   @SkipThrottle()
-  @Get('sentry')
-  async sentry(): Promise<void> {
-    return await this.videoService.sentry();
+  @Get(':id')
+  async findOne(@Param() { id }: FindVideoReqDto): Promise<FindVideoResDto> {
+    return await this.videoService.findOne(id);
   }
 }
