@@ -18,7 +18,7 @@ async function bootstrap() {
           level: process.env.STAGE === 'PRODUCTION' ? 'info' : 'debug',
           format: winston.format.combine(
             winston.format.timestamp(),
-            utilities.format.nestLike('metube', { prettyPrint: true })
+            utilities.format.nestLike('metube-micro', { prettyPrint: true })
           ),
         }),
       ],

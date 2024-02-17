@@ -5,6 +5,8 @@ import swaggerConfig from './config/swagger.config';
 import { ThrottlerModule } from '@nestjs/throttler';
 import sentryConfig from './config/sentry.config';
 import { LoggerMiddleware } from './common/middlewares/logger.middleware';
+import { AppController } from './app.controller';
+import { AppService } from './app.service';
 
 @Module({
   imports: [
@@ -21,8 +23,8 @@ import { LoggerMiddleware } from './common/middlewares/logger.middleware';
     }),
     VideoModule,
   ],
-  controllers: [],
-  providers: [Logger],
+  controllers: [AppController],
+  providers: [AppService, Logger],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer): void {
