@@ -1,6 +1,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 import { firstValueFrom } from 'rxjs';
+import { FindVideoResDto } from './dto/res.dto';
 
 @Injectable()
 export class VideoService {
@@ -22,5 +23,25 @@ export class VideoService {
       username: string;
     }>(this.client.send<{ id: string; username: string }>(pattern, payload));
     return { id, username };
+  }
+
+  async findAll(page: number, size: number): Promise<FindVideoResDto[]> {
+    const pattern = { cmd: 'find-all' };
+    const payload = { page, size };
+
+    const videos = await firstValueFrom<FindVideoResDto[]>(
+      this.client.send<FindVideoResDto[]>(pattern, payload)
+    );
+    return videos;
+  }
+
+  async sentry(): Promise<void> {
+    const pattern = { cmd: 'sentry' };
+    const payload = {};
+
+    const error = await firstValueFrom(
+      this.client.send<void>(pattern, payload)
+    );
+    return error;
   }
 }

@@ -1,10 +1,12 @@
 import {
   Body,
   Controller,
+  Get,
   Headers,
   HttpStatus,
   ParseFilePipeBuilder,
   Post,
+  Query,
   UploadedFile,
   UseInterceptors,
   UseGuards,
@@ -13,12 +15,15 @@ import { VideoService } from './video.service';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { HeaderGuard } from '../auth/guards/header.guard';
 import { ApiConsumes, ApiExtraModels, ApiTags } from '@nestjs/swagger';
-import { ApiPostResponse } from '../common/decorators/swagger.decorator';
+import {
+  ApiGetItemsResponse,
+  ApiPostResponse,
+} from '../common/decorators/swagger.decorator';
 import { CreateVideoReqDto, FindVideoReqDto } from './dto/req.dto';
 import { CreateVideoResDto, FindVideoResDto } from './dto/res.dto';
 import { PageReqDto } from '../common/dto/req.dto';
 import { ThrottlerBehindProxyGuard } from '../common/guards/throttler-behind-proxy.guard';
-import { Throttle } from '@nestjs/throttler';
+import { SkipThrottle, Throttle } from '@nestjs/throttler';
 
 @ApiTags('Video')
 @ApiExtraModels(
@@ -48,7 +53,7 @@ export class VideoController {
           fileType: 'mp4',
         })
         .addMaxSizeValidator({
-          maxSize: 100 * 1024 * 1024, // 100MB
+          maxSize: 100 * 1024 * 1024, // 100 MB
         })
         .build({
           errorHttpStatusCode: HttpStatus.UNPROCESSABLE_ENTITY,
@@ -72,5 +77,20 @@ export class VideoController {
       buffer
     );
     return { id, title, username };
+  }
+
+  @ApiGetItemsResponse(FindVideoResDto)
+  @SkipThrottle()
+  @Get()
+  async findAll(
+    @Query() { page, size }: PageReqDto
+  ): Promise<FindVideoResDto[]> {
+    return await this.videoService.findAll(page, size);
+  }
+
+  @SkipThrottle()
+  @Get('sentry')
+  async sentry(): Promise<void> {
+    return await this.videoService.sentry();
   }
 }

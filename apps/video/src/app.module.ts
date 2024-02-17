@@ -26,7 +26,7 @@ import { S3Module } from './s3/s3.module';
         };
         if (configService.get('STAGE') === 'LOCAL') {
           object = Object.assign(object, {
-            logging: true,
+            logging: false,
           });
         }
         return object;

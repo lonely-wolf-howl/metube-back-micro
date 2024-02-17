@@ -11,7 +11,7 @@ export class AppController {
   }
 
   @Get('sentry')
-  throwError(): void {
+  async sentry(): Promise<void> {
     throw new Error('SENTRY - ERROR TEST');
   }
 }
