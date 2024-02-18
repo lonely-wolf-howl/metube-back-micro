@@ -2,6 +2,7 @@ import { Inject, Injectable } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 import { firstValueFrom } from 'rxjs';
 import { FindVideoResDto } from './dto/res.dto';
+import { ReadStream } from 'fs';
 
 @Injectable()
 export class VideoService {
@@ -63,5 +64,26 @@ export class VideoService {
       this.client.send<FindVideoResDto>(pattern, payload)
     );
     return video;
+  }
+
+  async download(id: string) {
+    const pattern = { cmd: 'download' };
+    const payload = { id };
+    const { buffer, mimetype, size } = await firstValueFrom<{
+      buffer: { type: 'buffer'; data: number[] };
+      mimetype: string;
+      size: number;
+    }>(
+      this.client.send<{
+        buffer: { type: 'buffer'; data: number[] };
+        mimetype: string;
+        size: number;
+      }>(pattern, payload)
+    );
+    return {
+      stream: ReadStream.from(Buffer.from(buffer.data)),
+      mimetype,
+      size,
+    };
   }
 }

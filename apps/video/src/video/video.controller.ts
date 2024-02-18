@@ -91,4 +91,13 @@ export class VideoController {
     };
     return result;
   }
+
+  @MessagePattern({ cmd: 'download' })
+  async download({
+    id,
+  }: {
+    id: string;
+  }): Promise<{ buffer: Buffer; mimetype: string; size: number }> {
+    return await this.videoService.download(id);
+  }
 }

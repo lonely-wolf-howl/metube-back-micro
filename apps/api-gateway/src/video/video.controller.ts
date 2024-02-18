@@ -8,6 +8,8 @@ import {
   ParseFilePipeBuilder,
   Post,
   Query,
+  Res,
+  StreamableFile,
   UploadedFile,
   UseInterceptors,
   UseGuards,
@@ -26,6 +28,7 @@ import { CreateVideoResDto, FindVideoResDto } from './dto/res.dto';
 import { PageReqDto } from '../common/dto/req.dto';
 import { ThrottlerBehindProxyGuard } from '../common/guards/throttler-behind-proxy.guard';
 import { SkipThrottle, Throttle } from '@nestjs/throttler';
+import { Response } from 'express';
 
 @ApiTags('Video')
 @ApiExtraModels(
@@ -107,5 +110,19 @@ export class VideoController {
   @Get(':id')
   async findOne(@Param() { id }: FindVideoReqDto): Promise<FindVideoResDto> {
     return await this.videoService.findOne(id);
+  }
+
+  @Throttle({ default: { limit: 6, ttl: 60 } })
+  @Get(':id/download')
+  async download(
+    @Param() { id }: { id: string },
+    @Res({ passthrough: true }) res: Response
+  ) {
+    const { stream, mimetype, size } = await this.videoService.download(id);
+    res.set({
+      'Content-Length': size,
+      'Content-Type': mimetype,
+    });
+    return new StreamableFile(stream);
   }
 }

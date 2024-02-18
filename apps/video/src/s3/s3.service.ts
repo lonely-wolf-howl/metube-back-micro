@@ -4,11 +4,11 @@ import {
   GetObjectCommand,
   PutObjectCommand,
 } from '@aws-sdk/client-s3';
-import { Readable } from 'stream';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Video } from '../video/entity/video.entity';
 import { ClientProxy } from '@nestjs/microservices';
+import { Readable } from 'stream';
 
 @Injectable()
 export class S3Service {
@@ -53,7 +53,7 @@ export class S3Service {
 
   async downloadVideo(
     videoId: string
-  ): Promise<{ stream: Readable; mimetype: string; size: number }> {
+  ): Promise<{ buffer: Buffer; mimetype: string; size: number }> {
     try {
       const { Body, ContentLength } = await this.s3Client.send(
         new GetObjectCommand({
@@ -62,6 +62,11 @@ export class S3Service {
         })
       );
       const stream = Body as Readable;
+      const chunks: Uint8Array[] = [];
+      for await (const chunk of stream) {
+        chunks.push(chunk);
+      }
+      const buffer: Buffer = Buffer.concat(chunks);
       const size = ContentLength;
 
       const video = await this.videoRepository.findOne({
@@ -75,7 +80,7 @@ export class S3Service {
         title: video.title,
       });
 
-      return { stream, mimetype, size };
+      return { buffer, mimetype, size };
     } catch (error) {
       throw error;
     }

@@ -4,7 +4,7 @@ import { FindVideosQuery } from '../query/find-videos.query';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Video } from '../entity/video.entity';
 import { Repository } from 'typeorm';
-import { VideoWithSource } from '../types/type';
+import { VideoWithSource } from '../../types/type';
 import { S3Service } from '../../s3/s3.service';
 
 @Injectable()

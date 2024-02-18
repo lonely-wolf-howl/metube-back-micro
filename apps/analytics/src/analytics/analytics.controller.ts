@@ -8,7 +8,6 @@ export class AnalyticsController {
 
   @EventPattern('video_downloaded')
   async handleVideoDownloaded(@Payload() message: any) {
-    console.info(`message: ${message}`);
     this.analyticsService.increaseDownloadCount(message.id, message.title);
   }
 }

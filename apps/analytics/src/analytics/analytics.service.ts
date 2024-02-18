@@ -15,12 +15,13 @@ export class AnalyticsService {
 
   @Cron(CronExpression.EVERY_DAY_AT_MIDNIGHT)
   async handleEmailCron() {
-    console.info('EMAIL TASK CALLED');
+    console.info('EMAIL SEND TASK CALLED');
     const analytics = await this.findTop5Download();
     this.emailService.send(analytics);
   }
 
   async increaseDownloadCount(videoId: string, videoTitle: string) {
+    console.info('INCREASE DOWNLOAD COUNT TASK CALLED');
     const analytics = await this.analyticsRepository.findOneBy({ videoId });
     if (!analytics) {
       this.analyticsRepository.save(
