@@ -13,7 +13,7 @@ import { ClientProxyFactory, Transport } from '@nestjs/microservices';
         return ClientProxyFactory.create({
           transport: Transport.TCP,
           options: {
-            host: 'video-service',
+            host: 'localhost',
             port: 4001,
           },
         });

@@ -71,3 +71,118 @@ Nest is an MIT-licensed open source project. It can grow thanks to the sponsors 
 ## License
 
 Nest is [MIT licensed](LICENSE).
+
+```
+metube-back-micro
+├─ .eslintrc.js
+├─ .gitignore
+├─ .prettierrc.yaml
+├─ apps
+│  ├─ analytics
+│  │  ├─ dockerfile
+│  │  ├─ package.json
+│  │  ├─ src
+│  │  │  ├─ analytics
+│  │  │  │  ├─ analytics.controller.ts
+│  │  │  │  ├─ analytics.module.ts
+│  │  │  │  ├─ analytics.service.ts
+│  │  │  │  └─ entity
+│  │  │  │     └─ analytics.entity.ts
+│  │  │  ├─ app.module.ts
+│  │  │  ├─ common
+│  │  │  │  └─ interceptors
+│  │  │  │     └─ sentry.interceptor.ts
+│  │  │  ├─ config
+│  │  │  │  ├─ email.config.ts
+│  │  │  │  ├─ postgres.config.ts
+│  │  │  │  └─ sentry.config.ts
+│  │  │  ├─ email
+│  │  │  │  ├─ email.module.ts
+│  │  │  │  └─ email.service.ts
+│  │  │  └─ main.ts
+│  │  ├─ tsconfig.app.json
+│  │  └─ tsconfig.json
+│  ├─ api-gateway
+│  │  ├─ dockerfile
+│  │  ├─ package.json
+│  │  ├─ src
+│  │  │  ├─ app.controller.ts
+│  │  │  ├─ app.module.ts
+│  │  │  ├─ app.service.ts
+│  │  │  ├─ auth
+│  │  │  │  └─ guards
+│  │  │  │     └─ header.guard.ts
+│  │  │  ├─ common
+│  │  │  │  ├─ decorators
+│  │  │  │  │  └─ swagger.decorator.ts
+│  │  │  │  ├─ dto
+│  │  │  │  │  ├─ req.dto.ts
+│  │  │  │  │  └─ res.dto.ts
+│  │  │  │  ├─ guards
+│  │  │  │  │  └─ throttler-behind-proxy.guard.ts
+│  │  │  │  ├─ interceptors
+│  │  │  │  │  └─ sentry.interceptor.ts
+│  │  │  │  └─ middlewares
+│  │  │  │     └─ logger.middleware.ts
+│  │  │  ├─ config
+│  │  │  │  ├─ sentry.config.ts
+│  │  │  │  └─ swagger.config.ts
+│  │  │  ├─ main.ts
+│  │  │  └─ video
+│  │  │     ├─ dto
+│  │  │     │  ├─ req.dto.ts
+│  │  │     │  └─ res.dto.ts
+│  │  │     ├─ entity
+│  │  │     │  └─ video.entity.ts
+│  │  │     ├─ video.controller.ts
+│  │  │     ├─ video.module.ts
+│  │  │     └─ video.service.ts
+│  │  ├─ tsconfig.app.json
+│  │  └─ tsconfig.json
+│  └─ video
+│     ├─ dockerfile
+│     ├─ package.json
+│     ├─ src
+│     │  ├─ app.module.ts
+│     │  ├─ common
+│     │  │  └─ interceptors
+│     │  │     └─ sentry.interceptor.ts
+│     │  ├─ config
+│     │  │  ├─ postgres.config.ts
+│     │  │  └─ sentry.config.ts
+│     │  ├─ main.ts
+│     │  ├─ s3
+│     │  │  ├─ s3.module.ts
+│     │  │  └─ s3.service.ts
+│     │  ├─ types
+│     │  │  └─ type.ts
+│     │  └─ video
+│     │     ├─ command
+│     │     │  └─ create-video.command.ts
+│     │     ├─ dto
+│     │     │  ├─ req.dto.ts
+│     │     │  └─ res.dto.ts
+│     │     ├─ entity
+│     │     │  └─ video.entity.ts
+│     │     ├─ event
+│     │     │  └─ video-created.event.ts
+│     │     ├─ handler
+│     │     │  ├─ create-video.handler.ts
+│     │     │  ├─ find-video.handler.ts
+│     │     │  └─ find-videos.handler.ts
+│     │     ├─ query
+│     │     │  ├─ find-video.query.ts
+│     │     │  └─ find-videos.query.ts
+│     │     ├─ video.controller.ts
+│     │     ├─ video.module.ts
+│     │     └─ video.service.ts
+│     ├─ tsconfig.app.json
+│     └─ tsconfig.json
+├─ nest-cli.json
+├─ package-lock.json
+├─ package.json
+├─ README.md
+├─ tsconfig.build.json
+└─ tsconfig.json
+
+```
